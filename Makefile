@@ -6,42 +6,51 @@
 #    By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/24 17:32:24 by vinda-si          #+#    #+#              #
-#    Updated: 2025/05/24 20:05:33 by vinda-si         ###   ########.fr        #
+#    Updated: 2025/05/25 19:31:06 by vinda-si         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fractol
-CC = cc
-CFLAGS = -g -I/minilibx-linux -Wall -Wextra -Werror
-MLXFLAGS = -L./minilibx-linux -lmlx -lXext -lX11 -lmlx
+NAME		= fractol
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+MLX_DIR		= minilibx-linux
+INCLUDES	= -Iincludes -I$(MLX_DIR)
+MLX_LIB		= $(MLX_DIR)/libmlx.a
+MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11
 
-MLX_DIR = minilibx-linux
-MLX_LIB = $(MLX_DIR)/libmlx.a
-
-SRC =	src/handlers.c \
-		src/init.c \
-		src/lib_utils.c \
-		src/main.c \
-		src/math.c \
-		src/render.c \
-
-OBJ = $(SRC:%.c=%.o)
+SRC_DIR		= src
+SRC_FILES	= handlers.c init.c lib_utils.c main.c math.c render.c
+SRCS		= $(addprefix $(SRC_DIR)/,$(SRC_FILES))
+OBJ_DIR		= obj
+OBJS		= $(addprefix $(OBJ_DIR)/,$(SRC_FILES:.c=.o))
 
 all: $(NAME)
 
 $(MLX_LIB):
-		@$(MAKE) -C $(MLX_DIR)
+	@make -C $(MLX_DIR)
 
-$(NAME): $(OBJ) $(MLX_LIB)
-		$(CC) $(CFLAGS) $(OBJ) $(MLXFLAGS) -o $(NAME)
+$(NAME): $(MLX_LIB) $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ $(MLX_FLAGS) -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-		rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-		rm -f $(NAME)
-		@$(MAKE) -C $(MLX_DIR) clean
+	rm -f $(NAME)
+	@make -C $(MLX_DIR) clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+install:
+	cp $(NAME) /usr/local/bin
+
+uninstall:
+	rm -f /usr/local/bin/$(NAME)
+
+.PHONY: all clean fclean re install uninstall

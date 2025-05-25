@@ -6,7 +6,7 @@
 /*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:00:32 by vinda-si          #+#    #+#             */
-/*   Updated: 2025/05/24 21:28:48 by vinda-si         ###   ########.fr       */
+/*   Updated: 2025/05/25 19:23:59 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@
 
 typedef struct s_complex
 {
-	double x;
-	double y;
+	double	x;
+	double	y;
 }			t_complex;
 
 typedef struct s_img
@@ -77,18 +77,18 @@ typedef struct s_fractal
 	double	mouse_im;
 }			t_fractal;
 
-int		close_handler(t_fractal *fractal);
-int		key_handler(int keysym, t_fractal *fractal);
-int		julia_track(int x, int y, t_fractal *fractal);
-int		mouse_handler(int button, int x, int y, t_fractal *frac);
+int			close_handler(t_fractal *fractal);
+int			key_handler(int keysym, t_fractal *fractal);
+int			julia_track(int x, int y, t_fractal *fractal);
+int			mouse_handler(int button, int x, int y, t_fractal *frac);
 
-void	malloc_error(void);
-void	data_init(t_fractal *fractal);
-void	fractal_init(t_fractal *fractal);
+void		malloc_error(void);
+void		data_init(t_fractal *fractal);
+void		fractal_init(t_fractal *fractal);
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_putstr(char *string, int exit);
-double	atodbl(char *s);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		ft_putstr(char *string, int exit);
+double		atodbl(char *s);
 
 double		map(int pixel, double min, double max, int size);
 t_complex	sum_complex(t_complex z1, t_complex z2);
